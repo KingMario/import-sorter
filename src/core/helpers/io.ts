@@ -1,9 +1,9 @@
 import * as fs from 'fs';
-import * as glob from 'glob';
+import { glob } from 'glob';
 import * as path from 'path';
 import { Observable, Observer } from 'rxjs';
 
-export function readFile$(filePath: string, encoding: string = 'utf-8'): Observable<string> {
+export function readFile$(filePath: string, encoding: BufferEncoding = 'utf-8'): Observable<string> {
     return Observable.create((observer: Observer<string>) => {
         fs.readFile(filePath, encoding, (error, data) => {
             if (error) {
@@ -34,7 +34,7 @@ export function getFullPath(srcPath: string, filename: string): string {
 }
 
 export function filePaths$(startingSourcePath: string, pattern: string, ignore: string | string[]): Observable<string[]> {
-    return Observable.create((observer: Observer<string[]>) => {
+    return new Observable((observer: Observer<string[]>) => {
         glob(
             pattern,
             {
@@ -42,14 +42,10 @@ export function filePaths$(startingSourcePath: string, pattern: string, ignore: 
                 ignore,
                 nodir: true
             },
-            (error, matches) => {
-            if (error) {
-                observer.error(error);
-            } else {
-                const fullPaths = matches.map(filePath => getFullPath(startingSourcePath, filePath));
-                observer.next(fullPaths);
-                observer.complete();
-            }
-        });
+        ).then((matches: any) => {
+            const fullPaths = matches.map(filePath => getFullPath(startingSourcePath, filePath));
+            observer.next(fullPaths);
+            observer.complete();
+        }).catch(observer.error);
     });
 }

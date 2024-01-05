@@ -1,4 +1,4 @@
-import { chain, cloneDeep, isNil, LoDashExplicitArrayWrapper } from 'lodash';
+import { chain, cloneDeep, CollectionChain, isNil } from 'lodash';
 import * as path from 'path';
 import { CustomOrderRule } from './models/custom-order-rule';
 import { ImportElementSortResult } from './models/import-element-sort-result';
@@ -59,7 +59,7 @@ export class InMemoryImportSorter implements ImportSorter {
         });
     }
 
-    private sortNamedBindings(importsExpr: LoDashExplicitArrayWrapper<ImportElement>): LoDashExplicitArrayWrapper<ImportElement> {
+    private sortNamedBindings(importsExpr: CollectionChain<ImportElement>): CollectionChain<ImportElement> {
         const sortOrder = this.getSortOrderFunc(this.sortConfig.importMembers.order);
         return importsExpr.map(x => {
             if (x.namedBindings && x.namedBindings.length) {
@@ -76,12 +76,12 @@ export class InMemoryImportSorter implements ImportSorter {
         const sortOrder = this.getSortOrderFunc(this.sortConfig.importPaths.order, true);
         elementGroups.filter(gr => !gr.customOrderRule.disableSort).forEach(gr => {
             gr.elements = chain(gr.elements)
-                .orderBy<ImportElement>(y => sortOrder(y.moduleSpecifierName), [this.sortConfig.importPaths.direction])
+                .orderBy(y => sortOrder(y.moduleSpecifierName), [this.sortConfig.importPaths.direction])
                 .value();
         });
     }
 
-    private joinImportPaths(imports: ImportElement[]): { joinedExpr: LoDashExplicitArrayWrapper<ImportElement>, duplicates: ImportElement[] } {
+    private joinImportPaths(imports: ImportElement[]): { joinedExpr: CollectionChain<ImportElement>, duplicates: ImportElement[] } {
         const normalizedPathsExpr = this.normalizePaths(imports);
         if (!this.sortConfig.joinImportPaths) {
             return {
@@ -124,7 +124,7 @@ export class InMemoryImportSorter implements ImportSorter {
         return 0;
     }
 
-    private applyCustomSortingRules(sortedImports: LoDashExplicitArrayWrapper<ImportElement>): ImportElementGroup[] {
+    private applyCustomSortingRules(sortedImports: CollectionChain<ImportElement>): ImportElementGroup[] {
         if (!this.sortConfig.customOrderingRules
             || !this.sortConfig.customOrderingRules.rules
             || this.sortConfig.customOrderingRules.rules.length === 0) {

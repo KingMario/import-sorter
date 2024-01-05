@@ -12,7 +12,6 @@
         "rootDir": ".",
         "types": [
             "node",
-            "lodash",
             "mocha"
         ]
     },

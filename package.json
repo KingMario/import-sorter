@@ -27,9 +27,7 @@
     "onLanguage:javascript",
     "onLanguage:javascriptreact",
     "onLanguage:typescript",
-    "onLanguage:typescriptreact",
-    "onCommand:extension.sortImports",
-    "onCommand:extension.sortImportsInDirectory"
+    "onLanguage:typescriptreact"
   ],
   "main": "./out/src/extension",
   "scripts": {
@@ -42,32 +40,27 @@
     "lint": "tslint src/**/*.ts"
   },
   "dependencies": {
-    "glob": "^7.1.2",
-    "typescript": "^2.6.1",
-    "lodash": "4.17.4",
-    "rxjs": "6.3.3"
+    "glob": "^10.3.10",
+    "lodash": "^4.17.21",
+    "rxjs": "^7.8.1",
+    "typescript": "^5.3.3"
   },
   "devDependencies": {
-    "@types/lodash": "4.14.117",
-    "@types/mocha": "^2.2.42",
-    "@types/node": "^8.10.25",
-    "@types/glob": "^5.0.30",
-    "vscode-nls": "^2.0.2",
+    "@types/glob": "^8.1.0",
+    "@types/lodash": "^4.14.202",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.10.6",
     "expect.js": "^0.3.1",
-    "mocha": "^2.3.3",
-    "tslint": "^5.8.0",
-    "vscode": "^1.1.21"
+    "mocha": "^10.2.0",
+    "tslint": "^6.1.3",
+    "vscode": "^1.1.34",
+    "vscode-nls": "^5.2.0"
   },
   "contributes": {
     "commands": [
       {
         "command": "extension.sortImports",
         "title": "%command.sortImports%",
-        "category": "%commands.category%"
-      },
-      {
-        "command": "extension.sortImportsInDirectory",
-        "title": "%command.sortImportsInDirectory%",
         "category": "%commands.category%"
       }
     ],
